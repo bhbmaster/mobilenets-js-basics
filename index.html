@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Mobilenet Tensor Flow Picture Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
+</head>
+<body>
+
+    <!-- provide local img -->
+    <img id="img" src="pic2-cat.png" height="500px"></img>
+    
+    <!-- provide random img -->
+    <!-- doesn't work yet as it needs to be local. so first we need to download it? or research the error in the output 
+    <img id="img" src="https://source.unsplash.com/random/500x500" height="500px"></img> --> 
+
+    <div id="answer"></div>
+    <p><i><b>More info:</b> Open up the browser's console to see top 3 predictions & their probabilities. Expore the network tab -> mobile net module, and see other possible predictions.</i></p>
+    <script>
+    const img = document.getElementById('img');
+    const answer = document.getElementById('answer');
+    answer.innerHTML = "<h1>...Predicting (please wait)...</h1>";
+    // --- promise approach: ---
+    // mobilenet.load().then(model => {
+    //     model.classify(img).then(predictions => {
+    //     console.log('Predictions: ');
+    //     console.log(predictions);
+    //     answer.innerHTML = `<h1>Predictions:</h1><h3>* ${predictions[0].className}</h3>`
+    //     });
+    // });
+    // --- await approach: ---
+    // async function predict() {
+    //     const model = await mobilenet.load();
+    //     const predictions = await model.classify(img);
+    //     console.log(predictions)
+    //     answer.innerHTML = `<h1>Predictions:</h1><h3>* ${predictions[0].className}</h3>`
+    // }
+    // predict();
+    // --- arrow function await approach: ---
+    (async () => {
+        const model = await mobilenet.load();
+        const predictions = await model.classify(img);
+        console.log(predictions);
+        answer.innerHTML = `<h1>Predictions:</h1><h3>* ${predictions[0].className}</h3>`
+    })();
+    </script>
+</body>
+</html>
